@@ -1,0 +1,1 @@
+{"id":"cs-pro-003","chapterId":"cs-pro-03","titleFa":"Clean Architecture، Testing و Security","blocks":[{"type":"LIST","items":["SOLID","Clean Architecture","CQRS","DDD","xUnit","Mocking","Integration Testing","OWASP","Hashing","Authorization policies"]},{"type":"IMPORTANT","text":"Domain/Application نباید به UI یا Infrastructure وابسته شوند."}]}

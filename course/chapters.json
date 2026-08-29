@@ -1,0 +1,15 @@
+[
+  {"id":"cs-fnd-01","levelId":"fundamentals","titleFa":"شروع با C# و .NET","lessonIds":["cs-fnd-001","cs-fnd-002"]},
+  {"id":"cs-fnd-02","levelId":"fundamentals","titleFa":"داده و عملگرها","lessonIds":["cs-fnd-003","cs-fnd-004"]},
+  {"id":"cs-fnd-03","levelId":"fundamentals","titleFa":"کنترل جریان","lessonIds":["cs-fnd-005"]},
+  {"id":"cs-beg-01","levelId":"beginner","titleFa":"متدها و Collections","lessonIds":["cs-beg-001","cs-beg-002"]},
+  {"id":"cs-beg-02","levelId":"beginner","titleFa":"شی‌گرایی","lessonIds":["cs-beg-003","cs-beg-004"]},
+  {"id":"cs-beg-03","levelId":"beginner","titleFa":"خطا و فایل","lessonIds":["cs-beg-005"]},
+  {"id":"cs-adv-01","levelId":"advanced","titleFa":"LINQ و Functional Features","lessonIds":["cs-adv-001"]},
+  {"id":"cs-adv-02","levelId":"advanced","titleFa":"Async و Concurrency","lessonIds":["cs-adv-002"]},
+  {"id":"cs-adv-03","levelId":"advanced","titleFa":"Generics، Reflection و Memory","lessonIds":["cs-adv-003"]},
+  {"id":"cs-pro-01","levelId":"professional","titleFa":"دیتابیس و EF Core","lessonIds":["cs-pro-001"]},
+  {"id":"cs-pro-02","levelId":"professional","titleFa":"ASP.NET Core و Web API","lessonIds":["cs-pro-002"]},
+  {"id":"cs-pro-03","levelId":"professional","titleFa":"Architecture، Testing و Security","lessonIds":["cs-pro-003"]},
+  {"id":"cs-pro-04","levelId":"professional","titleFa":"Performance، Microservices و AI","lessonIds":["cs-pro-004"]}
+]

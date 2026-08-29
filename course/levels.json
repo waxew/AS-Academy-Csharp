@@ -1,0 +1,6 @@
+[
+  {"id":"fundamentals","titleFa":"مبانی","order":1,"chapterIds":["cs-fnd-01","cs-fnd-02","cs-fnd-03"]},
+  {"id":"beginner","titleFa":"مقدماتی","order":2,"chapterIds":["cs-beg-01","cs-beg-02","cs-beg-03"]},
+  {"id":"advanced","titleFa":"پیشرفته","order":3,"chapterIds":["cs-adv-01","cs-adv-02","cs-adv-03"]},
+  {"id":"professional","titleFa":"تخصصی","order":4,"chapterIds":["cs-pro-01","cs-pro-02","cs-pro-03","cs-pro-04"]}
+]

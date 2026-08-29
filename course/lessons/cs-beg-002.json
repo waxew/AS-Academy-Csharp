@@ -1,0 +1,1 @@
+{"id":"cs-beg-002","chapterId":"cs-beg-01","titleFa":"Array و Collections","blocks":[{"type":"LIST","items":["Array","List<T>","Dictionary<TKey,TValue>","HashSet<T>","Queue<T>","Stack<T>"]},{"type":"CODE","language":"csharp","code":"var prices = new List<decimal> { 120m, 85m, 310m };\nprices.Add(99m);\nConsole.WriteLine(prices.Average());"}]}

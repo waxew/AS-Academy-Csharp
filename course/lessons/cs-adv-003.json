@@ -1,0 +1,1 @@
+{"id":"cs-adv-003","chapterId":"cs-adv-03","titleFa":"Generics، Reflection و مدیریت حافظه","blocks":[{"type":"LIST","items":["Generic constraints","Attributes","Reflection","IDisposable","GC generations","Span<T>","Memory<T>","stackalloc"]},{"type":"NOTE","text":"Optimization بدون اندازه‌گیری انجام ندهید؛ ابتدا profiler و benchmark."}]}

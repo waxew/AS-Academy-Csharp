@@ -1,0 +1,18 @@
+{
+  "courseId": "csharp",
+  "titleFa": "آموزش جامع C#",
+  "titleEn": "C# Complete Academy",
+  "version": "1.0.0",
+  "contentSchemaVersion": 1,
+  "minimumCoreVersion": "1.0.0",
+  "rtl": true,
+  "capabilities": {
+    "codeRunner": true,
+    "terminalExamples": true,
+    "diagrams": true,
+    "quizzes": true,
+    "exercises": true,
+    "projects": true,
+    "glossary": true
+  }
+}
