@@ -22,6 +22,11 @@ def require(condition: bool, message: str):
         fail(message)
 
 
+def records(value):
+    """Accept one object or a JSON array so legacy bundles stay valid."""
+    return value if isinstance(value, list) else [value]
+
+
 manifest = load(COURSE / "manifest.json")
 levels = load(COURSE / "levels.json")
 chapters = load(COURSE / "chapters.json")
@@ -42,24 +47,24 @@ lesson_ids = set()
 lesson_files = sorted((COURSE / "lessons").glob("*.json"))
 require(lesson_files, "no lessons found")
 for path in lesson_files:
-    lesson = load(path)
-    lesson_id = lesson["id"]
-    require(lesson_id not in lesson_ids, f"duplicate lesson id {lesson_id}")
-    require(lesson["chapterId"] in chapter_ids, f"unknown chapter in lesson {lesson_id}")
-    require(lesson.get("blocks"), f"lesson {lesson_id} has no learning blocks")
-    lesson_ids.add(lesson_id)
+    for lesson in records(load(path)):
+        lesson_id = lesson["id"]
+        require(lesson_id not in lesson_ids, f"duplicate lesson id {lesson_id}")
+        require(lesson["chapterId"] in chapter_ids, f"unknown chapter in lesson {lesson_id}")
+        require(lesson.get("blocks"), f"lesson {lesson_id} has no learning blocks")
+        lesson_ids.add(lesson_id)
 
 for folder in ("exercises", "quizzes"):
     for path in sorted((COURSE / folder).glob("*.json")):
-        item = load(path)
-        require(item["lessonId"] in lesson_ids, f"{folder} item {item['id']} references missing lesson")
+        for item in records(load(path)):
+            require(item["lessonId"] in lesson_ids, f"{folder} item {item['id']} references missing lesson")
 
 project_ids = set()
 for path in sorted((COURSE / "projects").glob("*.json")):
-    item = load(path)
-    require(item["id"] not in project_ids, f"duplicate project id {item['id']}")
-    require(item.get("steps"), f"project {item['id']} has no steps")
-    project_ids.add(item["id"])
+    for item in records(load(path)):
+        require(item["id"] not in project_ids, f"duplicate project id {item['id']}")
+        require(item.get("steps"), f"project {item['id']} has no steps")
+        project_ids.add(item["id"])
 
 print(
     f"Course OK: {len(levels)} levels, {len(chapters)} chapters, "
