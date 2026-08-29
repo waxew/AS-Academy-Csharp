@@ -5,9 +5,23 @@ on:
     branches: [ main ]
   pull_request:
     branches: [ main ]
+  workflow_dispatch:
 
 jobs:
+  validate-course:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          submodules: recursive
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Validate C# course package
+        run: python tools/validate_course.py
+
   build:
+    needs: validate-course
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -21,3 +35,9 @@ jobs:
         run: |
           chmod +x AS-Academy-Core/gradlew
           AS-Academy-Core/gradlew -p . :app:assembleDebug
+      - name: Upload debug APK
+        uses: actions/upload-artifact@v4
+        with:
+          name: AS-Academy-Csharp-debug
+          path: app/build/outputs/apk/debug/*.apk
+          if-no-files-found: error
