@@ -1,0 +1,23 @@
+name: Android CI
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          submodules: recursive
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '17'
+      - name: Build debug APK
+        run: |
+          chmod +x AS-Academy-Core/gradlew
+          AS-Academy-Core/gradlew -p . :app:assembleDebug
