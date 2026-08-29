@@ -3,5 +3,6 @@
   {"id":"cs-prj-002","titleFa":"مدیریت هزینه آفلاین","level":"beginner","requirements":["OOP","JSON persistence","CRUD","گزارش ماهانه"]},
   {"id":"cs-prj-003","titleFa":"سیستم فروش با EF Core","level":"professional","requirements":["SQLite یا SQL Server","Migration","Products/Customers/Orders","Transaction","LINQ reports"]},
   {"id":"cs-prj-004","titleFa":"Academy Store API","level":"professional","requirements":["ASP.NET Core","EF Core","JWT","Pagination","Validation","OpenAPI","Tests"]},
-  {"id":"cs-prj-005","titleFa":"معماری سازمانی C#","level":"professional","requirements":["Clean Architecture","CQRS","DDD boundaries","Integration tests","Observability plan"]}
+  {"id":"cs-prj-005","titleFa":"معماری سازمانی C#","level":"professional","requirements":["Clean Architecture","CQRS","DDD boundaries","Integration tests","Observability plan"]},
+  {"id":"cs-prj-006","titleFa":"AI Knowledge Assistant","level":"professional","requirements":["ASP.NET Core API","Embedding provider abstraction","Vector search abstraction","RAG pipeline","Structured logging","Evaluation dataset"]}
 ]
