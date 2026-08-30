@@ -10,3 +10,8 @@
 .env.*
 secrets.json
 appsettings.*.local.json
+*.jks
+*.keystore
+*.p12
+*.pfx
+signing-info.txt
