@@ -34,11 +34,76 @@ jobs:
       - uses: gradle/actions/setup-gradle@v4
         with:
           gradle-version: '9.4.1'
-      - name: Build debug APK
-        run: gradle :app:assembleDebug --stacktrace
+
+      - name: Restore release keystore when configured
+        id: signing
+        shell: bash
+        env:
+          KEYSTORE_BASE64: ${{ secrets.ANDROID_SIGNING_KEYSTORE_BASE64 }}
+        run: |
+          if [ -n "$KEYSTORE_BASE64" ]; then
+            printf '%s' "$KEYSTORE_BASE64" | base64 --decode > "$RUNNER_TEMP/as-academy-csharp-release.jks"
+            echo "configured=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "configured=false" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Build debug and release APKs
+        env:
+          ANDROID_SIGNING_STORE_FILE: ${{ steps.signing.outputs.configured == 'true' && format('{0}/as-academy-csharp-release.jks', runner.temp) || '' }}
+          ANDROID_SIGNING_STORE_PASSWORD: ${{ secrets.ANDROID_SIGNING_STORE_PASSWORD }}
+          ANDROID_SIGNING_KEY_ALIAS: ${{ secrets.ANDROID_SIGNING_KEY_ALIAS }}
+          ANDROID_SIGNING_KEY_PASSWORD: ${{ secrets.ANDROID_SIGNING_KEY_PASSWORD }}
+        run: gradle :app:assembleDebug :app:assembleRelease --stacktrace
+
+      - name: Verify signed release APK
+        if: steps.signing.outputs.configured == 'true'
+        run: |
+          APK=$(find app/build/outputs/apk/release -name '*.apk' -type f | head -n 1)
+          test -n "$APK"
+          "$ANDROID_HOME/build-tools/$(ls "$ANDROID_HOME/build-tools" | sort -V | tail -n 1)/apksigner" verify --verbose --print-certs "$APK" | tee signature-verify.txt
+
+      - name: Mark unsigned release state
+        if: steps.signing.outputs.configured != 'true'
+        run: printf '%s\n' 'Release APK built without signing because repository signing secrets are not configured.' > signature-verify.txt
+
+      - name: Generate SHA-256 checksums
+        run: |
+          find app/build/outputs/apk -name '*.apk' -type f -print0 | sort -z | xargs -0 sha256sum > SHA256SUMS.txt
+          cat SHA256SUMS.txt
+
+      - name: Generate build information
+        run: |
+          cat > info.txt <<'EOF'
+          AS Academy C#
+          App version: 2.1.0
+          Version code: 21000
+          Application ID: com.asdevelopers.academy.csharp
+          Course package: 2.1.0
+          Java: 17
+          Gradle: 9.4.1
+          Signing key material is intentionally NOT stored in this public repository or artifact.
+          Required GitHub Actions secrets for signed releases:
+          ANDROID_SIGNING_KEYSTORE_BASE64
+          ANDROID_SIGNING_STORE_PASSWORD
+          ANDROID_SIGNING_KEY_ALIAS
+          ANDROID_SIGNING_KEY_PASSWORD
+          EOF
+
       - name: Upload debug APK
         uses: actions/upload-artifact@v4
         with:
           name: AS-Academy-Csharp-debug
           path: app/build/outputs/apk/debug/*.apk
+          if-no-files-found: error
+
+      - name: Upload release package
+        uses: actions/upload-artifact@v4
+        with:
+          name: AS-Academy-Csharp-release-package
+          path: |
+            app/build/outputs/apk/release/*.apk
+            SHA256SUMS.txt
+            signature-verify.txt
+            info.txt
           if-no-files-found: error
