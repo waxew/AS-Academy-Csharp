@@ -19,6 +19,10 @@ jobs:
           python-version: '3.12'
       - name: Validate C# course package
         run: python tools/validate_course.py
+      - name: Verify MainCourse C# source exists
+        run: |
+          test -f AS-Academy-MainCourse/courses/csharp/course/manifest.json
+          test -d AS-Academy-MainCourse/courses/csharp/course/lessons
 
   build:
     needs: validate-course
@@ -48,13 +52,27 @@ jobs:
             echo "configured=false" >> "$GITHUB_OUTPUT"
           fi
 
-      - name: Build debug and release APKs
+      - name: Build debug APK
         env:
           ANDROID_SIGNING_STORE_FILE: ${{ steps.signing.outputs.configured == 'true' && format('{0}/as-academy-csharp-release.jks', runner.temp) || '' }}
           ANDROID_SIGNING_STORE_PASSWORD: ${{ secrets.ANDROID_SIGNING_STORE_PASSWORD }}
           ANDROID_SIGNING_KEY_ALIAS: ${{ secrets.ANDROID_SIGNING_KEY_ALIAS }}
           ANDROID_SIGNING_KEY_PASSWORD: ${{ secrets.ANDROID_SIGNING_KEY_PASSWORD }}
-        run: gradle :app:assembleDebug :app:assembleRelease --stacktrace
+        run: gradle :app:assembleDebug --stacktrace
+
+      - name: Build release APK
+        env:
+          ANDROID_SIGNING_STORE_FILE: ${{ steps.signing.outputs.configured == 'true' && format('{0}/as-academy-csharp-release.jks', runner.temp) || '' }}
+          ANDROID_SIGNING_STORE_PASSWORD: ${{ secrets.ANDROID_SIGNING_STORE_PASSWORD }}
+          ANDROID_SIGNING_KEY_ALIAS: ${{ secrets.ANDROID_SIGNING_KEY_ALIAS }}
+          ANDROID_SIGNING_KEY_PASSWORD: ${{ secrets.ANDROID_SIGNING_KEY_PASSWORD }}
+        run: gradle :app:assembleRelease --stacktrace
+
+      - name: Verify packaged MainCourse content
+        run: |
+          test -f app/build/generated/courseAssets/course/csharp/manifest.json
+          test -d app/build/generated/courseAssets/course/csharp/lessons
+          echo 'C# MainCourse content is packaged into the Android app assets.'
 
       - name: Verify signed release APK
         if: steps.signing.outputs.configured == 'true'
@@ -79,15 +97,12 @@ jobs:
           App version: 2.1.0
           Version code: 21000
           Application ID: com.asdevelopers.academy.csharp
-          Course package: 2.1.0
+          Course source: AS-Academy-MainCourse/courses/csharp/course
+          Shared UI: AS-Academy-MainUi
+          Shared runtime: AS-Academy-Core
           Java: 17
           Gradle: 9.4.1
           Signing key material is intentionally NOT stored in this public repository or artifact.
-          Required GitHub Actions secrets for signed releases:
-          ANDROID_SIGNING_KEYSTORE_BASE64
-          ANDROID_SIGNING_STORE_PASSWORD
-          ANDROID_SIGNING_KEY_ALIAS
-          ANDROID_SIGNING_KEY_PASSWORD
           EOF
 
       - name: Upload debug APK
