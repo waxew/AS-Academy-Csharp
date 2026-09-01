@@ -20,6 +20,7 @@ dependencyResolutionManagement {
 }
 
 rootProject.name = "AS-Academy-Csharp"
-include(":app", ":core", ":course")
+include(":app", ":core", ":course", ":main-ui")
 project(":core").projectDir = file("AS-Academy-Core/core")
 project(":course").projectDir = file("AS-Academy-Core/course")
+project(":main-ui").projectDir = file("AS-Academy-MainUi/main-ui")
