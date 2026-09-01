@@ -42,9 +42,7 @@ android {
     buildTypes {
         getByName("release") {
             isMinifyEnabled = false
-            if (hasReleaseSigning) {
-                signingConfig = signingConfigs.getByName("release")
-            }
+            if (hasReleaseSigning) signingConfig = signingConfigs.getByName("release")
         }
     }
 
@@ -60,8 +58,9 @@ android {
     }
 }
 
+// MainCourse is now the single source of truth for C# educational content.
 val syncCourseAssets by tasks.registering(Copy::class) {
-    from(rootProject.layout.projectDirectory.dir("course"))
+    from(rootProject.layout.projectDirectory.dir("AS-Academy-MainCourse/courses/csharp/course"))
     into(layout.buildDirectory.dir("generated/courseAssets/course/csharp"))
 }
 
