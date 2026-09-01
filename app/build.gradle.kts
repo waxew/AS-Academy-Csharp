@@ -58,7 +58,7 @@ android {
     }
 }
 
-// MainCourse is now the single source of truth for C# educational content.
+// MainCourse is the single source of truth for C# educational content.
 val syncCourseAssets by tasks.registering(Copy::class) {
     from(rootProject.layout.projectDirectory.dir("AS-Academy-MainCourse/courses/csharp/course"))
     into(layout.buildDirectory.dir("generated/courseAssets/course/csharp"))
@@ -69,6 +69,7 @@ tasks.named("preBuild").configure { dependsOn(syncCourseAssets) }
 dependencies {
     implementation(project(":core"))
     implementation(project(":course"))
+    implementation(project(":main-ui"))
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.activity.compose)
     implementation(libs.androidx.lifecycle.runtime)
